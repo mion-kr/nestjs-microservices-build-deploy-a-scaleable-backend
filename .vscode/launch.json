@@ -5,10 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "pnpm start:debug",
       "name": "debug",
       "request": "launch",
-      "type": "node-terminal"
+      "runtimeArgs": ["run-script", "start:debug"],
+      "runtimeExecutable": "pnpm", // npm, yarn, pnpm
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "console": "integratedTerminal",
+      "runtimeVersion": "18" // Node.js 버전
     }
   ]
 }
