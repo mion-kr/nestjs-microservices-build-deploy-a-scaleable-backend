@@ -59,3 +59,16 @@ github : https://github.com/mguay22/sleepr
 
 - 의존성 설치  
   `pnpm i joi`
+
+## validator
+
+- 의존성 설치
+  `pnpm i --save class-validator class-transformer`
+
+## Logging
+
+- 의존성 설치
+  `pnpm i nestjs-pino pino-http`
+
+- 의존성 설치(추가)
+  `pnpm i pino-pretty`
