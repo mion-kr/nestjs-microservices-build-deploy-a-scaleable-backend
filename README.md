@@ -72,3 +72,46 @@ github : https://github.com/mguay22/sleepr
 
 - 의존성 설치(추가)
   `pnpm i pino-pretty`
+
+## dockerize
+
+- docker build command  
+  `cd ./apps/reservations`  
+  `docker build ../../ -f Dockerfile -t sleepr_reservations`  
+  docker buile 뒤의 경로는 context 입니다. 다시 말해 docker 빌드 시 root로 지정될 경로 입니다.
+
+- docker run command  
+  `docker run sleepr_reservations`  
+  위 명령어를 실행하면 MONGODB_URI가 없다고 메시지가 나옵니다.  
+  환경변수를 적용하기 위해 docker-compose를 사용합니다.
+
+- debugging  
+   package.json의 디버깅 스크립트에 `0.0.0.0:9299`를 추가 합니다.  
+   ` "nest start --debug 0.0.0.0:9229 --watch"`
+
+  vscode에서 디버깅을하려면 launch.json에서`Node.js: 원격프로그램에 연결` 코드 어시스트로 추가 합니다.
+
+  ```json
+  {
+    // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
+    // 기존 특성에 대한 설명을 보려면 가리킵니다.
+    // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "attach",
+        "name": "debug:attach-reservations",
+        "address": "localhost",
+        "localRoot": "${workspaceFolder}",
+        "sourceMaps": true,
+        "restart": true,
+        "port": 19229,
+        "remoteRoot": "/usr/src/app"
+        // "skipFiles": ["<node_internals>/**"]
+      }
+    ]
+  }
+  ```
+
+  중단점을 설정한 후 API를 요청해봅니다.

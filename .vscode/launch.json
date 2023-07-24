@@ -5,14 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug",
-      "request": "launch",
-      "runtimeArgs": ["run-script", "start:debug"],
-      "runtimeExecutable": "pnpm", // npm, yarn, pnpm
-      "skipFiles": ["<node_internals>/**"],
       "type": "node",
-      "console": "integratedTerminal",
-      "runtimeVersion": "18" // Node.js 버전
+      "request": "attach",
+      "name": "debug:attach-reservations",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "restart": true,
+      "port": 19229,
+      "remoteRoot": "/usr/src/app"
+      // "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

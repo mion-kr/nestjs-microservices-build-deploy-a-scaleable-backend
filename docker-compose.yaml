@@ -1,6 +1,18 @@
 version: '3.7'
 
 services:
+  reservations:
+    build:
+      context: .
+      dockerfile: ./apps/reservations/Dockerfile
+      target: development
+    command: pnpm run start:debug reservations
+    ports:
+      - 3000:3000 # port for the app
+      - 19229:9229 # port for the debugger
+    volumes:
+      - .:/usr/src/app
+
   mongodb:
     image: mongo
     ports:
