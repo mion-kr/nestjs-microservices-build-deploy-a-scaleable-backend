@@ -15,6 +15,18 @@
       "port": 19229,
       "remoteRoot": "/usr/src/app"
       // "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "debug:attach-auth",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "restart": true,
+      "port": 29229,
+      "remoteRoot": "/usr/src/app"
+      // "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

@@ -7,7 +7,7 @@ import { ReservationDocument } from './models/reservation.schema';
 
 @Injectable()
 export class ReservationsRepository extends AbstractRepository<ReservationDocument> {
-  protected logger: Logger = new Logger(ReservationsRepository.name);
+  protected readonly logger: Logger = new Logger(ReservationsRepository.name);
 
   constructor(
     @InjectModel(ReservationDocument.name)

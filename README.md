@@ -115,3 +115,15 @@ github : https://github.com/mguay22/sleepr
   ```
 
   중단점을 설정한 후 API를 요청해봅니다.
+
+## passport
+
+- 의존성 설치
+  `pnpm i @nestjs/passport passport passport-local`
+  `pnpm i -D @types/passport-local`
+
+## jwt
+
+- 의존성 설치
+  `pnpm i @nestjs/jwt passport-jwt`
+  `pnpm i -D @types/passport-jwt`

@@ -5,9 +5,25 @@ services:
       dockerfile: ./apps/reservations/Dockerfile
       target: development
     command: pnpm run start:debug reservations
+    env_file:
+      - ./apps/reservations/.env
     ports:
       - 3000:3000 # port for the app
       - 19229:9229 # port for the debugger
+    volumes:
+      - .:/usr/src/app
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:debug auth
+    env_file:
+      - ./apps/auth/.env
+    ports:
+      - 3001:3001 # port for the app
+      - 29229:9229 # port for the debugger
     volumes:
       - .:/usr/src/app
 
