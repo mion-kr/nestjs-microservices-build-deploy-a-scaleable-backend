@@ -127,3 +127,9 @@ github : https://github.com/mguay22/sleepr
 - 의존성 설치
   `pnpm i @nestjs/jwt passport-jwt`
   `pnpm i -D @types/passport-jwt`
+
+## bcrypt
+
+- 의존성 설치
+  `pnpm i bcrypt`
+  `pnpm i -D @types/bcrypt`
