@@ -128,8 +128,24 @@ github : https://github.com/mguay22/sleepr
   `pnpm i @nestjs/jwt passport-jwt`
   `pnpm i -D @types/passport-jwt`
 
+- 의존성 설치(쿠키)
+  `pnpm i cookie-parser`
+  `pnpm i -D @types/cookie-parser`
+
 ## bcrypt
 
 - 의존성 설치
-  `pnpm i bcrypt`
-  `pnpm i -D @types/bcrypt`
+  `pnpm i bcryptjs`
+  `pnpm i -D @types/bcryptjs`
+
+# 이 프로젝트에서 중요하다고 느낀점
+
+- docker 개발 환경
+  서비스 API를 띄우기 위해 로컬에서 npm 명령어를 입력했는데 docker 컨테이너를 통해 개발하고 디버깅하는 방법도 나쁘지 않은 것 같다.
+  오히려 한층 더 운영 환경에 가깝게 테스트할 수 있어서 혹시 모를 버그를 미연에 방지할 수 있는 것 같다.
+
+- pino logger
+  서비스 운영 시 어떤 요청에 의해 예외, 쿼리 등이 실행되었는지 추척이 어려운데, pino logger를 적용하면 각 log마다 추척 id가 있어서 로그 추척이 편하다.
+
+- jwt cookie 인증
+  기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt를 쿠키로 관리 방법이 더 간편하다.

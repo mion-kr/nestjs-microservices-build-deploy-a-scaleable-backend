@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
-@Schema({ versionKey: false })
+@Schema({ collection: 'reservations', versionKey: false })
 export class ReservationDocument extends AbstractDocument {
   @Prop()
   timestamp: Date; // 데이터 생성일시
