@@ -24,11 +24,6 @@ export class ReservationDocument extends AbstractDocument {
   @IsString()
   @IsNotEmpty()
   @Prop()
-  placeId: string; // 장소 id
-
-  @IsString()
-  @IsNotEmpty()
-  @Prop()
   invoiceId: string; // 청구서 id
 }
 

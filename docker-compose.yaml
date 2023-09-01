@@ -27,6 +27,20 @@ services:
     volumes:
       - .:/usr/src/app
 
+  payments:
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:debug payments
+    env_file:
+      - ./apps/payments/.env
+    ports:
+      - 3003:3003 # port for the app
+      - 39229:9229 # port for the debugger
+    volumes:
+      - .:/usr/src/app
+
   mongodb:
     image: mongo
     ports:

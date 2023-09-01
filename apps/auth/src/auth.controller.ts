@@ -1,9 +1,11 @@
+import { CurrentUser } from '@app/common';
 import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
-import { CurrentUser } from './current-user-decorator';
-import { LocalAuthGuards } from './guards/local-auth.guards';
-import { UserDocument } from './users/modesl/user.schema';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuards } from './guards/local-auth.guard';
+import { UserDocument } from './users/models/user.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -18,5 +20,11 @@ export class AuthController {
     // 여기서는 쿠키로 JWT 데이터를 응답합니다.
     await this.authService.login(user, response);
     response.send(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @MessagePattern('authenticate')
+  async authenticate(@Payload() data: any) {
+    return data.user;
   }
 }
