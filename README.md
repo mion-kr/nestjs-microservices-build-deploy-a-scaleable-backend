@@ -148,6 +148,10 @@ github : https://github.com/mguay22/sleepr
 - 의존성 설치
   `pnpm i stripe`
 
+- 의존성 설치
+  `pnpm i nodemailer`
+  `pnpm i @types/nodemailer`
+
 # 이 프로젝트에서 중요하다고 느낀점
 
 - docker 개발 환경

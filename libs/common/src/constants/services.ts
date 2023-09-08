@@ -1,2 +1,3 @@
-export const AUTH_SERVICE = 'AUTH';
-export const PAYMENT_SERVICE = 'PAYMENT';
+export const AUTH_SERVICE = 'auth';
+export const PAYMENT_SERVICE = 'payment';
+export const NOTIFICATIONS_SERVICE = 'notifications';

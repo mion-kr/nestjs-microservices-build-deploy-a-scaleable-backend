@@ -36,8 +36,20 @@ services:
     env_file:
       - ./apps/payments/.env
     ports:
-      - 3003:3003 # port for the app
       - 39229:9229 # port for the debugger
+    volumes:
+      - .:/usr/src/app
+
+  notifications:
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:debug notifications
+    env_file:
+      - ./apps/notifications/.env
+    ports:
+      - 49229:9229 # port for the debugger
     volumes:
       - .:/usr/src/app
 

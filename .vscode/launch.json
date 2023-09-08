@@ -39,6 +39,18 @@
       "port": 39229,
       "remoteRoot": "/usr/src/app"
       // "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "debug:attach-notification",
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "restart": true,
+      "port": 49229,
+      "remoteRoot": "/usr/src/app"
+      // "skipFiles": ["<node_internals>/**"]
     }
   ]
 }
