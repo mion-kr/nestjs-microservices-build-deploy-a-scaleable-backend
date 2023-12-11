@@ -4,14 +4,18 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.json
 
 RUN npm install -g pnpm
 
-# RUN pnpm install
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # node_modules 파일을 제외하기 위해선 .dockerignore 파일을 사용해야 합니다.
-COPY . .
+# COPY . .
+
+# 운영환경을 위한 도커 파일 copy 변경
+COPY apps/reservations apps/reservations
+COPY libs libs
 
 RUN pnpm run build
 
@@ -30,8 +34,7 @@ COPY pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
 
-# RUN pnpm install --prod
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --prod
 
 COPY --from=development /usr/src/app/dist ./dist
 
