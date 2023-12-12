@@ -5,10 +5,11 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm install -g pnpm
 
-RUN pnpm install
+#RUN pnpm install
 
 # node_modules 파일을 제외하기 위해선 .dockerignore 파일을 사용해야 합니다.
 #COPY . .
@@ -17,10 +18,11 @@ RUN pnpm install
 COPY apps/auth apps/auth
 COPY libs libs
 
-# root package.json 의존성 설치 후 추가적으로 서비스 package.json 의존성을 추가로 설치합니다.
-RUN cd apps/auth && pnpm install 
+# 재귀 의존성 설치. 각각의 워크스페이스의 의존성을 설치 합니다.
+ RUN pnpm install -r 
+#RUN cd apps/auth && pnpm install
 
-RUN pnpm run build
+RUN pnpm run build auth
 
 # ---
 FROM node:alpine as production

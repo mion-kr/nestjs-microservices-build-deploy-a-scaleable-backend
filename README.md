@@ -165,6 +165,13 @@ github : https://github.com/mguay22/sleepr
   `cd apps/auth`
   `pnpm init`
 
+## 의존성 전체 설치
+
+root 경로에서 아래 명령어를 실행합니다.
+`pnpm i -r`
+
+각각의 하위 모듈에 필요한 의존성만 추가되어 node_modules 파일이 생성됩니다.
+
 # 이 프로젝트에서 중요하다고 느낀점
 
 - docker 개발 환경

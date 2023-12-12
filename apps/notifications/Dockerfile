@@ -5,21 +5,25 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm install -g pnpm
 
-RUN pnpm install
+#RUN pnpm install
 
 # node_modules 파일을 제외하기 위해선 .dockerignore 파일을 사용해야 합니다.
 # COPY . .
+ 
 # 운영환경을 위한 도커 파일 copy 변경
 COPY apps/notifications apps/notifications
 COPY libs libs
 
-# root package.json 의존성 설치 후 추가적으로 서비스 package.json 의존성을 추가로 설치합니다.
-RUN cd apps/notifications && pnpm install 
+# 재귀 의존성 설치. 각각의 워크스페이스의 의존성을 설치 합니다.
+RUN pnpm install -r 
 
-RUN pnpm run build
+#RUN cd apps/notifications && pnpm install
+
+RUN pnpm run build notifications
 
 # ---
 FROM node:alpine as production
