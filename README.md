@@ -209,6 +209,7 @@ root 경로에서 아래 명령어를 실행합니다.
         `docker image push asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production`
 
 ### GCP Cloud Build
+
 1. Cloud 빌드 대시보드에서 '빌드 트리거 설정' 클릭
 
 ### helm
@@ -266,8 +267,3 @@ root 경로에서 아래 명령어를 실행합니다.
 
 - jwt cookie 인증
   기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt를 쿠키로 관리 방법이 더 간편하다.
-
-## 쿠버네티스 연동
-
-도커 이미지 빌드
-Cloud의 Private Container Registry에 도커 이미지 푸쉬
