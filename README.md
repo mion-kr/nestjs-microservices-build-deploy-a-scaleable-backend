@@ -172,14 +172,102 @@ root 경로에서 아래 명령어를 실행합니다.
 
 각각의 하위 모듈에 필요한 의존성만 추가되어 node_modules 파일이 생성됩니다.
 
-# 이 프로젝트에서 중요하다고 느낀점
+### GCP Artifact Registry
+
+1. Google Artifact Registry 사용 허용(Contianer Registry는 EOF)
+2. 저장소 만들기
+
+![Alt text](images/image.png)
+![Alt text](images/image2.png)
+
+3.  gcloud 프로젝트 셋팅  
+    `gcloud config set project {{프로젝트 ID}}`
+
+4.  홈페이지 상단 '설정안내'에 따라 진행하기
+
+    1. gcloud sdk 설치
+    2. 인증하기
+    3. 도커 구성하기 명령어 실행하기
+
+5.  Artifacts Repository 리스트 확인  
+    `gcloud artifacts repositories list`
+
+6.  도커 이미지 빌드  
+    `cd apps/reservations && docker build -t reservations -f . ../../`
+
+7.  도커 태그 추가 및 푸쉬  
+    `docker tag reservations asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production`
+
+        위 명령어를 입력하고 도커 이미지를 확인하면 다음과 같이 보입니다.
+        ```
+        REPOSITORY                                                                TAG       IMAGE ID       CREATED         SIZE
+        asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production   latest    bbb80e78440e   3 minutes ago   207MB
+        reservations                                                              latest    bbb80e78440e   3 minutes ago   207MB
+        ```
+
+        도커 이미지 푸쉬
+        `docker image push asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production`
+
+### GCP Cloud Build
+1. Cloud 빌드 대시보드에서 '빌드 트리거 설정' 클릭
+
+### helm
+
+- k8s 폴더 생성
+  `mkdir k8s`
+
+- k8s로 이동
+  `cd k8s`
+
+- 헬름 차트 생성
+  `helm create sleepr`
+
+- 헬름 템플릿 삭제
+  `rm -rf sleepr/templates/*`
+
+- values.yaml 내용 삭제
+
+- 예약 deployment 생성
+  `kubectl create deployment reservations --image=todo/reservations/production --dry-run=client -o yaml > deployment.yaml`
+
+- 만들어진 파일을 templates/reservations 폴더를 만들고 옮깁니다.
+
+- 헬름을 실행합니다.
+  `cd k8s/sleepr`
+  `helm install sleepr .`
+
+- pod가 생성되었는지 확인 합니다.
+  `kubectl get pod`
+
+- 컨테이너가 생성되었지만 Ready 상태가 이상 있으므로 describe 명령어로 pod를 확인 합니다.
+  `kubectl describe pod 'pod이름'`
+
+- gcr 권한이 없어서 이미지를 다운받지 못하므로 구글클라우드에서 계정 키 설정 후 쿠버네티스에 다음과 같이 설정 합니다.
+  `kubectl create secret docker-registry gcr-json-key --docker-server=abc --docker-username=_json_key --docker-password="$(cat ./test_key.json)" --docker-email=sleeprnestapp@gmail.com`
+
+- 서비스계정의 설정을 변경 합니다.
+  `kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'`
+
+- 예약 deployment를 재실행 합니다.
+  `kubectl rollout restart deployment reservations`
+
+- minikube 설정
+  minikube start
+  eval $(minikube -p minikube docker-env --shell=bash)
+
+## 이 프로젝트에서 중요하다고 느낀점
 
 - docker 개발 환경
   서비스 API를 띄우기 위해 로컬에서 npm 명령어를 입력했는데 docker 컨테이너를 통해 개발하고 디버깅하는 방법도 나쁘지 않은 것 같다.
   오히려 한층 더 운영 환경에 가깝게 테스트할 수 있어서 혹시 모를 버그를 미연에 방지할 수 있는 것 같다.
 
 - pino logger
-  서비스 운영 시 어떤 요청에 의해 예외, 쿼리 등이 실행되었는지 추척이 어려운데, pino logger를 적용하면 각 log마다 추척 id가 있어서 로그 추척이 편하다.
+  서비스 운영 시 어떤 요청에 의해 예외, 쿼리 등이 실행되었는지 추척이 어려운.데, pino logger를 적용하면 각 log마다 추척 id가 있어서 로그 추척이 편하다.
 
 - jwt cookie 인증
   기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt를 쿠키로 관리 방법이 더 간편하다.
+
+## 쿠버네티스 연동
+
+도커 이미지 빌드
+Cloud의 Private Container Registry에 도커 이미지 푸쉬
