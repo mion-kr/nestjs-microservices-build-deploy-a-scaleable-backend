@@ -211,6 +211,7 @@ root 경로에서 아래 명령어를 실행합니다.
 ### GCP Cloud Build
 
 1. Cloud 빌드 대시보드에서 '빌드 트리거 설정' 클릭
+2. 트리거 생성 및 저장소 생성
 
 ### helm
 
@@ -244,17 +245,44 @@ root 경로에서 아래 명령어를 실행합니다.
   `kubectl describe pod 'pod이름'`
 
 - gcr 권한이 없어서 이미지를 다운받지 못하므로 구글클라우드에서 계정 키 설정 후 쿠버네티스에 다음과 같이 설정 합니다.
-  `kubectl create secret docker-registry gcr-json-key --docker-server=abc --docker-username=_json_key --docker-password="$(cat ./test_key.json)" --docker-email=sleeprnestapp@gmail.com`
 
-- 서비스계정의 설정을 변경 합니다.
+  1. Gcp -> API 및 서비스 -> 사용자 인증 정보 -> 사용자 인증 정보 만들기 -> 서비스 계정 -> 만들고 계속하기
+     ![Alt text](images/image3.png)
+  2. 역할에 Artifact Registry Reader로 선택하고 '계속' 버튼 클릭
+     ![Alt text](images/image4.png)
+  3. 완료 버튼 누르기
+  4. 사용자 인증 정보 -> 서비스 계정에서 방금 만든 계정 선택
+     ![Alt text](images/image5.png)
+  5. 키 -> 키 추가 버튼 클릭 -> 새 키 만들기 -> 키 유형 json 선택
+
+  `kubectl create secret docker-registry gcr-json-key --docker-server=asia-northeast3-docker.pkg.dev --docker-username=_json_key --docker-password="$(cat ./gcp-artifact-image-pull.json)" --docker-email=whddbs311@gmail.com`
+
+- 서비스계정의 설정을 변경 합니다.  
   `kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'`
 
-- 예약 deployment를 재실행 합니다.
+- 예약 deployment를 재실행 합니다.  
   `kubectl rollout restart deployment reservations`
 
-- minikube 설정
-  minikube start
-  eval $(minikube -p minikube docker-env --shell=bash)
+- pod 상태를 확인 합니다.  
+  `kubectl get pods`
+
+- lob back이 실패 했으므로 로그를 확인합니다.  
+  `kubectl logs reservations-85fc58d5bb-b9zdp`  
+  로그를 확인하면 컨테이너는 정상적으로 실행되었으나 TCP_PORT와 같은 환경변수가 설정되지 않아 오류가 발생하였습니다.
+
+- 다른 서비스들도 똑같이 deployment를 생성 합니다.  
+  `cd k8s/sleepr/templates/auth`  
+  `kubectl create deployment auth --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production --dry-run=client -o yaml > deployment.yaml`  
+
+  `cd ../payments`  
+  `kubectl create deployment payments --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production --dry-run=client -o yaml > deployment.yaml` 
+
+  `cd ../notifications`  
+  `kubectl create deployment notifications --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production --dry-run=client -o yaml > deployment.yaml`  
+
+- helm 업그레이드 실행  
+  `cd ./k8s/sleepr`  
+  `helm upgrade sleepr .`
 
 ## 이 프로젝트에서 중요하다고 느낀점
 
@@ -267,3 +295,5 @@ root 경로에서 아래 명령어를 실행합니다.
 
 - jwt cookie 인증
   기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt를 쿠키로 관리 방법이 더 간편하다.
+
+- GCP는 AWS에 비해 설정이 편하다.

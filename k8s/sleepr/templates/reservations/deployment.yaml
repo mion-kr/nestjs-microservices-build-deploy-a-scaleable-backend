@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # creationTimestamp: null # 미사용
+  labels:
+    app: reservations
+  name: reservations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservations
+  # strategy: {} # 미사용
+  template:
+    metadata:
+      # creationTimestamp: null # 미사용
+      labels:
+        app: reservations
+    spec:
+      containers:
+        - image: asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production
+          name:
+            reservations
+            # resources: {} # 미사용
+  # status: {} # 미사용
