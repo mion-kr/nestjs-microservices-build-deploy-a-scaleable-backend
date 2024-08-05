@@ -15,5 +15,5 @@ spec:
         app: auth
     spec:
       containers:
-        - image: asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production
+        - image: asia-northeast3-docker.pkg.dev/study-reservation/auth/production
           name: auth

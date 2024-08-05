@@ -5,7 +5,7 @@ steps:
       [
         'build',
         '-t',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/reservations/production',
         '-f',
         'apps/reservations/Dockerfile',
         '.',
@@ -14,7 +14,7 @@ steps:
     args:
       [
         'push',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/reservations/production',
       ]
 
   #### Auth ####
@@ -23,7 +23,7 @@ steps:
       [
         'build',
         '-t',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/auth/production',
         '-f',
         'apps/auth/Dockerfile',
         '.',
@@ -32,7 +32,7 @@ steps:
     args:
       [
         'push',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/auth/production',
       ]
 
   #### Notifications ####
@@ -41,7 +41,7 @@ steps:
       [
         'build',
         '-t',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/notifications/production',
         '-f',
         'apps/notifications/Dockerfile',
         '.',
@@ -50,7 +50,7 @@ steps:
     args:
       [
         'push',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/notifications/production',
       ]
 
   #### Payments ####
@@ -59,7 +59,7 @@ steps:
       [
         'build',
         '-t',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/payments/production',
         '-f',
         'apps/payments/Dockerfile',
         '.',
@@ -68,5 +68,5 @@ steps:
     args:
       [
         'push',
-        'asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production',
+        'asia-northeast3-docker.pkg.dev/study-reservation/payments/production',
       ]

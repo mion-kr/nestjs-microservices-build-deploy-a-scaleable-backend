@@ -18,8 +18,13 @@ spec:
         app: reservations
     spec:
       containers:
-        - image: asia-northeast3-docker.pkg.dev/x-plateau-409309/reservations/production
-          name:
-            reservations
-            # resources: {} # 미사용
+        - image: asia-northeast3-docker.pkg.dev/study-reservation/reservations/production
+          name: reservations
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: connectionString
+              # resources: {} # 미사용
   # status: {} # 미사용

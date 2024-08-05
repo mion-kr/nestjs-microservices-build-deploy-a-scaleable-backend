@@ -15,5 +15,5 @@ spec:
         app: payments
     spec:
       containers:
-        - image: asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production
+        - image: asia-northeast3-docker.pkg.dev/study-reservation/payments/production
           name: payments

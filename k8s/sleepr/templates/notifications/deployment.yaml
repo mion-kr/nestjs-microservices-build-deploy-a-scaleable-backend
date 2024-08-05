@@ -15,5 +15,5 @@ spec:
         app: notifications
     spec:
       containers:
-        - image: asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production
+        - image: asia-northeast3-docker.pkg.dev/study-reservation/notifications/production
           name: notifications
