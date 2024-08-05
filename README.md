@@ -272,17 +272,37 @@ root 경로에서 아래 명령어를 실행합니다.
 
 - 다른 서비스들도 똑같이 deployment를 생성 합니다.  
   `cd k8s/sleepr/templates/auth`  
-  `kubectl create deployment auth --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production --dry-run=client -o yaml > deployment.yaml`  
+  `kubectl create deployment auth --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/auth/production --dry-run=client -o yaml > deployment.yaml`
 
   `cd ../payments`  
-  `kubectl create deployment payments --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production --dry-run=client -o yaml > deployment.yaml` 
+  `kubectl create deployment payments --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/payments/production --dry-run=client -o yaml > deployment.yaml`
 
   `cd ../notifications`  
-  `kubectl create deployment notifications --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production --dry-run=client -o yaml > deployment.yaml`  
+  `kubectl create deployment notifications --image=asia-northeast3-docker.pkg.dev/x-plateau-409309/notifications/production --dry-run=client -o yaml > deployment.yaml`
 
 - helm 업그레이드 실행  
   `cd ./k8s/sleepr`  
   `helm upgrade sleepr .`
+
+## kubernetes 환경변수
+
+### MongoDB Atlas
+
+- 무료로 사용할 수 있습니다.
+- 접속 ip를 0.0.0.0/0 으로 설정(study 환경에서만 이렇게 설정 합니다)
+- 쿠버네티스에 MongoDB 관련 시크릿을 생성 합니다.(connectionString이 키 이고 mongodb... 로 시작하는 문자열이 value 입니다.)
+  `kubectl create secret generic mongodb --from-literal=connectionString="mongodb+srv://mion:jongun311@cluster0.ods8rvd.mongodb.net"`
+- `kubectl get secret mongodb -o yaml`을 입력하면 시크릿키가 base64로 인코딩 된 것을 확인할 수 있습니다.
+- 이제 helm의 deployment.yaml 파일에 아래와 같이 환경변수를 추가 합니다.
+  ```yaml
+            env:
+          - name: MONGODB_URI
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: connectionString
+  ```
+- `helm upgrade sleepr .`으로 변경 사항을 적용합니다.
 
 ## 이 프로젝트에서 중요하다고 느낀점
 
@@ -294,6 +314,6 @@ root 경로에서 아래 명령어를 실행합니다.
   서비스 운영 시 어떤 요청에 의해 예외, 쿼리 등이 실행되었는지 추척이 어려운.데, pino logger를 적용하면 각 log마다 추척 id가 있어서 로그 추척이 편하다.
 
 - jwt cookie 인증
-  기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt를 쿠키로 관리 방법이 더 간편하다.
+  기존엔 항상 jwt의 accessToken을 복사하여 스웨거 security에 붙이는 방식으로 테스트했는데, jwt 쿠키로 관리 방법이 더 간편하다.
 
 - GCP는 AWS에 비해 설정이 편하다.
