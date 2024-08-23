@@ -9,18 +9,19 @@ COPY nest-cli.json nest-cli.json
 
 RUN npm install -g pnpm
 
-#RUN pnpm install
+RUN pnpm install
 
 # node_modules 파일을 제외하기 위해선 .dockerignore 파일을 사용해야 합니다.
-#COPY . .
+# COPY . .
 
 # 운영환경을 위한 도커 파일 copy 변경
 COPY apps/auth apps/auth
 COPY libs libs
 
 # 재귀 의존성 설치. 각각의 워크스페이스의 의존성을 설치 합니다.
- RUN pnpm install -r 
-#RUN cd apps/auth && pnpm install
+# RUN pnpm install -r 
+
+RUN cd apps/auth && pnpm install
 
 RUN pnpm run build auth
 
